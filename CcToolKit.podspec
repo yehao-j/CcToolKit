@@ -30,4 +30,9 @@ Pod::Spec.new do |s|
         ss.frameworks   = 'Cocoa'
     end
 
+    s.subspec 'Base' do |ss|
+        ss.source_files = 'Source/Base/*'
+        ss.frameworks   = 'Cocoa'
+    end
+
 end

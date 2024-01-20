@@ -44,28 +44,6 @@ extension NSView {
         }
     }
     
-    public var backColor: NSColor? {
-        get {
-            if self is NSTextField {
-                return (self as! NSTextField).backgroundColor
-            }
-            
-            guard let color = self.layer?.backgroundColor else {
-                return nil
-            }
-            return NSColor(cgColor: color)
-        }
-        set {
-            if self is NSTextField {
-                (self as! NSTextField).backgroundColor = newValue
-                return
-            }
-            
-            wantsLayer = true
-            self.layer?.backgroundColor = newValue?.cgColor
-        }
-    }
-    
     ///从左上角开始算
     public var top: CGFloat {
         get {
