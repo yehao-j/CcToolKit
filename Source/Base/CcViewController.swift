@@ -17,11 +17,19 @@ open class CcViewController: NSViewController {
     
     open override func loadView() {
         view = NSView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.setFrameSize(viewSize)
         
-        /// 解决Preferences库中作为subController的时候，不显示的问题
-        view.widthAnchor.constraint(equalToConstant: viewSize.width).isActive = true
-        view.heightAnchor.constraint(equalToConstant: viewSize.height).isActive = true
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(updateDarkMode), name: NSNotification.Name("AppleInterfaceThemeChangedNotification"), object: nil)
     }
+    
+    @objc fileprivate func updateDarkMode() {
+        let dict = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)
+        if let type = dict?["AppleInterfaceStyle"] as? String, type.caseInsensitiveCompare("dark") == .orderedSame {
+            darkMode(isDark: true)
+        } else {
+            darkMode(isDark: false)
+        }
+    }
+    
+    @objc open func darkMode(isDark: Bool) {}
 }

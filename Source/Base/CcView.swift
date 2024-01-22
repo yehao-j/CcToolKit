@@ -17,7 +17,8 @@ open class CcView: NSView {
     
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        wantsLayer = true
+        
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(updateDarkMode), name: NSNotification.Name("AppleInterfaceThemeChangedNotification"), object: nil)
     }
     
     /// 是否翻转坐标系，true:左上角为原点 false:左下角为原点
@@ -28,4 +29,15 @@ open class CcView: NSView {
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @objc fileprivate func updateDarkMode() {
+        let dict = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)
+        if let type = dict?["AppleInterfaceStyle"] as? String, type.caseInsensitiveCompare("dark") == .orderedSame {
+            darkMode(isDark: true)
+        } else {
+            darkMode(isDark: false)
+        }
+    }
+    
+    @objc open func darkMode(isDark: Bool) {}
 }
